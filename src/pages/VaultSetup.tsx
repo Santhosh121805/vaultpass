@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useVault } from "@/context/VaultContext";
 import { useNavigate } from "react-router-dom";
 import { Wallet, Users, Timer, ArrowRight, Check, Plus, Trash2 } from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const steps = [
   { label: "Connect Wallet", icon: Wallet },
@@ -11,7 +12,7 @@ const steps = [
 ];
 
 const VaultSetup = () => {
-  const { vault, connectWallet, addBeneficiary, setCheckInInterval, depositETH } = useVault();
+  const { vault, addBeneficiary, setCheckInInterval, depositETH } = useVault();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [beneficiaries, setBeneficiaries] = useState<{ nickname: string; walletAddress: string; percentage: number }[]>([]);
@@ -22,9 +23,7 @@ const VaultSetup = () => {
   const totalPct = beneficiaries.reduce((s, b) => s + b.percentage, 0);
 
   const handleNext = () => {
-    if (step === 0) {
-      connectWallet();
-    }
+    if (step === 0 && !vault.isConnected) return;
     if (step === 1) {
       beneficiaries.forEach(b => addBeneficiary(b));
     }
@@ -45,7 +44,7 @@ const VaultSetup = () => {
     setNewB({ nickname: "", walletAddress: "", percentage: 0 });
   };
 
-  const canProceed = step === 0 ? true :
+  const canProceed = step === 0 ? vault.isConnected :
     step === 1 ? totalPct === 100 :
     step === 2 ? true :
     Number(depositAmount) > 0;
@@ -80,13 +79,9 @@ const VaultSetup = () => {
             <Wallet className="w-16 h-16 text-primary" />
             <div>
               <h2 className="text-xl font-bold">Connect Your Wallet</h2>
-              <p className="text-muted-foreground mt-2 text-sm">We'll simulate a wallet connection for this demo.</p>
+              <p className="text-muted-foreground mt-2 text-sm">Connect via MetaMask or any supported wallet.</p>
             </div>
-            {vault.isConnected && (
-              <div className="bg-safe/10 border border-safe/30 rounded-lg px-4 py-2 font-mono text-sm text-safe">
-                Connected: {vault.walletAddress.slice(0, 10)}...
-              </div>
-            )}
+            <ConnectButton />
           </div>
         )}
 
