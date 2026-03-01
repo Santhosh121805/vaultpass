@@ -1,53 +1,137 @@
-# Welcome to your Lovable project
+# VaultPass - Web3 Crypto Inheritance Platform
 
-## Project info
+A complete decentralized application for secure crypto asset inheritance management. Users set up automated vaults with beneficiaries, receive check-in reminders, and trigger distribution after a grace period.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🚀 Quick Start
 
-## How can I edit this code?
+### Prerequisites
+- Node.js 18+
+- npm or bun
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### Frontend Setup
+```bash
+cd vaultpass-legacy
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Backend Setup
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Configure .env with Supabase, SMTP, RPC URLs
+npm run dev
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📁 Project Structure
 
-**Use GitHub Codespaces**
+```
+vaultpass-legacy/
+├── src/                    # Frontend (React + TypeScript)
+│   ├── components/        # UI components
+│   ├── pages/            # Application pages
+│   ├── config/           # Web3 configuration (Wagmi)
+│   └── hooks/            # Custom React hooks
+├── backend/              # Backend (Node.js + Express)
+│   ├── src/
+│   │   ├── routes/      # API endpoints
+│   │   ├── services/    # Email, Push, Blockchain
+│   │   ├── jobs/        # Background cron jobs
+│   │   ├── db/          # Supabase client
+│   │   └── utils/       # Helpers
+│   └── docs/            # Setup guides
+└── package.json
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
+## ✨ Features
+
+**Frontend:**
+- Wallet connection (MetaMask/WalletConnect)
+- Create and manage vaults
+- Add beneficiaries with percentage allocation
+- View vault status and check-in timers
+- Claim portal for beneficiaries
+- Real-time notifications
+
+**Backend:**
+- Wallet signature authentication (JWT)
+- 18+ REST API endpoints
+- Email notifications
+- Push notifications (Push Protocol)
+- Background jobs (vault checks every 6 hours)
+- Blockchain event listeners
+- Rate limiting & security
+
+**Database:**
+- PostgreSQL via Supabase
+- Users, Vaults, Beneficiaries, Notifications tables
+
+## 🔐 Authentication
+
+1. User connects wallet (MetaMask)
+2. Backend generates nonce
+3. User signs nonce with wallet
+4. Backend verifies signature → returns JWT
+5. JWT used for all API requests
+
+## 📚 Documentation
+
+- **Frontend:** `README.md` or start in `src/App.tsx`
+- **Backend:** `backend/START_HERE.md` → `backend/SETUP_INSTRUCTIONS.md`
+- **Deployment:** `backend/DEPLOYMENT.md`
+- **API Examples:** `backend/API_EXAMPLES.md`
+
+## 🛠️ Tech Stack
+
+| Layer | Tech |
+|-------|------|
+| Frontend | React, TypeScript, Tailwind, Wagmi |
+| Backend | Node.js, Express, TypeScript |
+| Database | PostgreSQL (Supabase) |
+| Blockchain | Ethers.js, Web3 |
+| Notifications | Nodemailer, Push Protocol |
+| DevOps | Docker, docker-compose |
+
+## 🚢 Deployment
+
+**Backend:** Railway, Render, AWS, Docker
+**Frontend:** Vercel, Netlify, AWS Amplify
+
+See `backend/DEPLOYMENT.md` for detailed guides.
+
+## 📝 Environment Variables
+
+**Frontend:** `.env` (already configured)
+**Backend:** `backend/.env`
+
+```env
+# Backend essentials
+SUPABASE_URL=
+SUPABASE_KEY=
+JWT_SECRET=
+RPC_URL_ETHEREUM=
+SMTP_HOST=
+SMTP_USER=
+SMTP_PASS=
+```
+
+## 🤝 Contributing
+
+1. Clone repository
+2. Create feature branch
+3. Commit changes
+4. Push and create PR
+
+## 📄 License
+
+MIT
+
+## 🔗 Links
+
+- **Frontend Repo:** https://github.com/Santhosh121805/vaultpass
+- **Backend Docs:** `./backend/START_HERE.md`
+- **Live Demo:** (Coming soon)
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
 ## What technologies are used for this project?
