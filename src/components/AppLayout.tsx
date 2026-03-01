@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Shield, HeartPulse, Users, Bell, Settings } from "lucide-react";
-import { useVault } from "@/context/VaultContext";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const navItems = [
   { path: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -13,7 +13,6 @@ const navItems = [
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const { vault } = useVault();
 
   // Don't show nav on claim portal
   if (location.pathname.startsWith("/claim")) {
@@ -28,18 +27,7 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <Shield className="w-7 h-7 text-primary" />
           <span className="text-xl font-bold tracking-tight">VaultPass</span>
         </Link>
-        <div className="flex items-center gap-4">
-          {vault.isConnected ? (
-            <div className="flex items-center gap-2 bg-secondary px-3 py-1.5 rounded-lg">
-              <div className="w-2 h-2 rounded-full bg-safe animate-pulse" />
-              <span className="font-mono text-xs text-foreground">{vault.walletAddress.slice(0, 6)}...{vault.walletAddress.slice(-4)}</span>
-            </div>
-          ) : (
-            <Link to="/setup" className="bg-primary text-primary-foreground px-4 py-1.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity">
-              Connect Wallet
-            </Link>
-          )}
-        </div>
+        <ConnectButton showBalance={false} chainStatus="icon" accountStatus="address" />
       </header>
 
       <div className="flex flex-1">

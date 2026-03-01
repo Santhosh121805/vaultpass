@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { useAccount } from "wagmi";
 
 export interface Beneficiary {
   id: string;
@@ -31,8 +32,6 @@ export interface VaultState {
 
 interface VaultContextType {
   vault: VaultState;
-  connectWallet: () => void;
-  disconnectWallet: () => void;
   checkIn: () => void;
   addBeneficiary: (b: Omit<Beneficiary, "id">) => void;
   updateBeneficiary: (id: string, b: Partial<Beneficiary>) => void;
@@ -76,18 +75,16 @@ export const useVault = () => {
 
 export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [vault, setVault] = useState<VaultState>(initialState);
+  const { address, isConnected } = useAccount();
 
-  const connectWallet = useCallback(() => {
+  // Sync wagmi wallet state into vault context
+  useEffect(() => {
     setVault(v => ({
       ...v,
-      isConnected: true,
-      walletAddress: "0x742d35Cc6634C0532925a3b844Bc9e7595f841",
+      isConnected,
+      walletAddress: address ?? "",
     }));
-  }, []);
-
-  const disconnectWallet = useCallback(() => {
-    setVault(v => ({ ...v, isConnected: false, walletAddress: "" }));
-  }, []);
+  }, [address, isConnected]);
 
   const checkIn = useCallback(() => {
     const now = new Date();
@@ -137,7 +134,7 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   return (
-    <VaultContext.Provider value={{ vault, connectWallet, disconnectWallet, checkIn, addBeneficiary, updateBeneficiary, removeBeneficiary, setCheckInInterval, depositETH }}>
+    <VaultContext.Provider value={{ vault, checkIn, addBeneficiary, updateBeneficiary, removeBeneficiary, setCheckInInterval, depositETH }}>
       {children}
     </VaultContext.Provider>
   );

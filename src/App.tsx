@@ -2,6 +2,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import "@rainbow-me/rainbowkit/styles.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { VaultProvider } from "@/context/VaultContext";
 import AppLayout from "@/components/AppLayout";
@@ -12,31 +15,43 @@ import VaultSetup from "./pages/VaultSetup";
 import Alerts from "./pages/Alerts";
 import ClaimPortal from "./pages/ClaimPortal";
 import NotFound from "./pages/NotFound";
+import { wagmiConfig } from "./config/wagmi";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <VaultProvider>
-        <BrowserRouter>
-          <AppLayout>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/check-in" element={<CheckIn />} />
-              <Route path="/beneficiaries" element={<BeneficiaryManager />} />
-              <Route path="/setup" element={<VaultSetup />} />
-              <Route path="/alerts" element={<Alerts />} />
-              <Route path="/claim" element={<ClaimPortal />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AppLayout>
-        </BrowserRouter>
-      </VaultProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <WagmiProvider config={wagmiConfig}>
+    <QueryClientProvider client={queryClient}>
+      <RainbowKitProvider
+        theme={darkTheme({
+          accentColor: "hsl(0, 62%, 46%)",
+          accentColorForeground: "white",
+          borderRadius: "medium",
+          fontStack: "system",
+        })}
+      >
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <VaultProvider>
+            <BrowserRouter>
+              <AppLayout>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/check-in" element={<CheckIn />} />
+                  <Route path="/beneficiaries" element={<BeneficiaryManager />} />
+                  <Route path="/setup" element={<VaultSetup />} />
+                  <Route path="/alerts" element={<Alerts />} />
+                  <Route path="/claim" element={<ClaimPortal />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AppLayout>
+            </BrowserRouter>
+          </VaultProvider>
+        </TooltipProvider>
+      </RainbowKitProvider>
+    </QueryClientProvider>
+  </WagmiProvider>
 );
 
 export default App;
