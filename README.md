@@ -148,8 +148,3 @@ This project is built with:
 <img width="1468" height="651" alt="image" src="https://github.com/user-attachments/assets/7b419f71-a019-4d04-bb1a-e871a4654a17" />
 
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
